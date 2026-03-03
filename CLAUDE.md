@@ -1,10 +1,10 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) and other AI agents when working with code in this repository. For human-readable documentation, see [README.md](README.md).
 
 ## Project Overview
 
-Engaging Markdown is a client-side Markdown viewer — a single-page application with zero build tools and zero npm dependencies. It uses vanilla JavaScript, HTML, and CSS with CDN-hosted libraries (marked.js, Highlight.js, Google Fonts).
+Engaging Markdown is a lightweight, client-side Markdown viewer — a single-page application with zero build tools and zero npm dependencies. It uses vanilla JavaScript, HTML, and CSS with CDN-hosted libraries (marked.js, Highlight.js, Google Fonts). The goal is to stay lightweight: no frameworks, no bundlers, no backend.
 
 ## Development
 
