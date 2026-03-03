@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engaging Markdown Viewer</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Highlight.js theme (swapped dynamically by JS) -->
+  <link id="hljs-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" />
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Progress Bar -->
+  <div id="progress-bar"></div>
+
+  <!-- Top Bar -->
+  <div id="top-bar">
+    <div class="left">
+      <button id="toc-toggle" class="top-btn hidden" title="Toggle Table of Contents">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="10" y2="8"/><line x1="2" y1="12" x2="12" y2="12"/></svg>
+        <span class="toc-label">Contents</span>
+      </button>
+      <span id="file-name">Engaging Markdown Viewer</span>
+    </div>
+    <div class="right">
+      <button id="open-btn" class="top-btn" title="Open Markdown File">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13V3a1 1 0 0 1 1-1h4l2 2h4a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
+        Open
+      </button>
+      <button id="theme-toggle" title="Toggle dark / light mode">
+        <span id="theme-icon">&#9789;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- App -->
+  <div id="app">
+    <!-- Sidebar / TOC -->
+    <nav id="sidebar">
+      <div id="toc-header">
+        <div id="toc-title">Table of Contents</div>
+        <button id="toc-close" title="Close sidebar">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>
+        </button>
+      </div>
+      <ul id="toc-list"></ul>
+      <div id="sidebar-resize"></div>
+    </nav>
+
+    <!-- Main -->
+    <div id="main">
+      <div id="content">
+
+        <!-- Drop Zone (landing) -->
+        <div id="drop-zone">
+          <div class="drop-icon">&#128196;</div>
+          <div class="drop-title">Drop a Markdown file here</div>
+          <div class="drop-subtitle">or click the button below to browse</div>
+          <button class="drop-btn" id="pick-btn">Choose .md file</button>
+        </div>
+
+        <!-- Rendered Markdown -->
+        <article id="rendered" class="markdown-body"></article>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden file input -->
+  <input type="file" id="file-input" accept=".md,.markdown,.mdx,.txt" hidden />
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
+  <!-- App script -->
+  <script src="js/app.js"></script>
+
+</body>
+</html>
