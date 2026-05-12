@@ -1,0 +1,22 @@
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    transition: background var(--transition-speed), color var(--transition-speed);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #fff;
+  }
+}

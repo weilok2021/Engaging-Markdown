@@ -1,0 +1,113 @@
+@layer layout {
+  /* ===== Top Bar ===== */
+  #top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background var(--transition-speed), border-color var(--transition-speed);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  #top-bar .left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #file-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #top-bar .right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .top-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: var(--font-body);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all var(--transition-speed);
+  }
+
+  .top-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  /* ===== App Shell ===== */
+  #app {
+    display: flex;
+    min-height: calc(100vh - 53px);
+  }
+
+  /* ===== Main Content ===== */
+  #main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+    padding: 40px 32px;
+  }
+
+  #content {
+    width: 100%;
+    max-width: var(--max-width);
+  }
+
+  /* ===== Rendered Markdown wrapper ===== */
+  #rendered {
+    display: none;
+    animation: fadeInUp 0.5s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Overlay for mobile sidebar ===== */
+  #sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 53px;
+    background: rgba(0,0,0,0.3);
+    z-index: 85;
+  }
+
+  #sidebar-overlay.visible { display: block; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    #main { padding: 24px 16px; }
+  }
+
+  @media (max-width: 600px) {
+    #file-name { max-width: 160px; }
+  }
+
+}

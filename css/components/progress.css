@@ -1,0 +1,13 @@
+@layer components {
+  /* ===== Reading Progress Bar ===== */
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: var(--progress-height);
+    background: var(--accent);
+    width: 0%;
+    z-index: 1000;
+    transition: width 0.15s linear;
+  }
+}
