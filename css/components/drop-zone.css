@@ -1,73 +1,49 @@
 @layer components {
   /* ===== Drop Zone (landing) ===== */
-  #drop-zone {
+  .drop-zone {
+    position: absolute;
+    inset: 40px 32px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 60vh;
     border: 2px dashed var(--border);
     border-radius: 16px;
-    padding: 48px 32px;
     text-align: center;
     transition: all var(--transition-speed);
     background: var(--drop-zone-bg);
     cursor: pointer;
+    min-height: 60vh;
   }
 
-  #drop-zone:hover,
-  #drop-zone.drag-over {
+  .drop-zone:hover,
+  .drop-zone.drag-over {
     border-color: var(--drop-zone-border);
     background: var(--accent-light);
   }
 
-  #drop-zone.drag-over {
+  .drop-zone.drag-over {
     transform: scale(1.008);
     border-style: solid;
   }
 
-  .drop-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    opacity: 0.55;
+  .drop-zone-frame {
+    padding: 48px 32px;
   }
 
-  .drop-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 6px;
-    letter-spacing: -0.01em;
-  }
-
-  .drop-subtitle {
-    font-size: 0.9rem;
+  .drop-zone-text {
+    font-size: 1.1rem;
+    font-style: italic;
     color: var(--text-muted);
-    margin-bottom: 28px;
   }
 
-  .drop-btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 28px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: var(--font-body);
-    transition: all 0.2s;
-    letter-spacing: 0.01em;
+  /* Hide drop zone when article has content */
+  .article[data-state="loaded"] ~ .drop-zone {
+    display: none;
   }
 
-  .drop-btn:hover {
-    background: var(--accent-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
-  }
-
-  @media (max-width: 600px) {
-    .drop-title { font-size: 1.15rem; }
-    .drop-subtitle { font-size: 0.85rem; }
+  @media (max-width: 900px) {
+    .drop-zone {
+      inset: 24px 16px;
+    }
   }
 }

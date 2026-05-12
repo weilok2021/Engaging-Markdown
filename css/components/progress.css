@@ -1,6 +1,6 @@
 @layer components {
   /* ===== Reading Progress Bar ===== */
-  #progress-bar {
+  .progress {
     position: fixed;
     top: 0;
     left: 0;

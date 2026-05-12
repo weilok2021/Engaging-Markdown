@@ -1,6 +1,6 @@
 @layer components {
   /* Language label on code blocks */
-  .code-lang-label {
+  .code-lang {
     position: absolute;
     top: 0;
     right: 40px;
@@ -17,7 +17,7 @@
   }
 
   /* Copy button for code blocks */
-  .copy-btn {
+  .code-copy {
     position: absolute;
     top: 8px;
     right: 8px;
@@ -33,7 +33,7 @@
     transition: all 0.2s;
   }
 
-  .markdown-body pre:hover .copy-btn { opacity: 1; }
+  .article pre:hover .code-copy { opacity: 1; }
 
-  .copy-btn:hover { color: var(--text); background: var(--bg-tertiary); }
+  .code-copy:hover { color: var(--text); background: var(--bg-tertiary); }
 }

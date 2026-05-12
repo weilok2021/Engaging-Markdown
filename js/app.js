@@ -3,21 +3,21 @@
    ============================================================ */
 
 // --- DOM refs ---
-const dropZone      = document.getElementById('drop-zone');
-const rendered      = document.getElementById('rendered');
-const fileInput     = document.getElementById('file-input');
-const pickBtn       = document.getElementById('pick-btn');
-const openBtn       = document.getElementById('open-btn');
-const themeToggle   = document.getElementById('theme-toggle');
-const themeIcon     = document.getElementById('theme-icon');
-const progressBar   = document.getElementById('progress-bar');
-const sidebar       = document.getElementById('sidebar');
-const tocList       = document.getElementById('toc-list');
-const tocToggle     = document.getElementById('toc-toggle');
-const fileNameEl    = document.getElementById('file-name');
-const overlay       = document.getElementById('sidebar-overlay');
-const tocClose      = document.getElementById('toc-close');
-const sidebarResize = document.getElementById('sidebar-resize');
+const article       = document.querySelector('.article');
+const dropZone      = document.querySelector('[data-drop-zone]');
+const fileInput     = document.querySelector('[data-file-input]');
+const fileOpenBtn   = document.querySelector('[data-file-open]');
+const themeToggle   = document.querySelector('[data-theme-toggle]');
+const themeLabel    = themeToggle.querySelector('.label');
+const progressBar   = document.querySelector('.progress');
+const sidebar       = document.querySelector('.sidebar');
+const sidebarFoot   = sidebar.querySelector('.sidebar-foot');
+const tocList       = document.querySelector('.toc-list');
+const tocIndicator  = document.querySelector('.toc-indicator');
+const tocToggle     = document.querySelector('[data-toc-toggle]');
+const fileNameEl    = document.querySelector('[data-file-name]');
+const overlay       = document.querySelector('[data-sidebar-overlay]');
+const sidebarResize = document.querySelector('[data-sidebar-resize]');
 const html          = document.documentElement;
 
 // ============================================================
@@ -30,7 +30,7 @@ if (savedTheme) {
 } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
   html.setAttribute('data-theme', 'dark');
 }
-updateThemeIcon();
+updateThemeLabel();
 updateHljsTheme();
 
 themeToggle.addEventListener('click', () => {
@@ -38,13 +38,13 @@ themeToggle.addEventListener('click', () => {
   const next = current === 'dark' ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
   localStorage.setItem('md-viewer-theme', next);
-  updateThemeIcon();
+  updateThemeLabel();
   updateHljsTheme();
 });
 
-function updateThemeIcon() {
+function updateThemeLabel() {
   const isDark = html.getAttribute('data-theme') === 'dark';
-  themeIcon.innerHTML = isDark ? '&#9788;' : '&#9789;';
+  themeLabel.textContent = isDark ? 'Dark' : 'Light';
 }
 
 function updateHljsTheme() {
@@ -59,11 +59,8 @@ function updateHljsTheme() {
 // File Input
 // ============================================================
 
-pickBtn.addEventListener('click', () => fileInput.click());
-openBtn.addEventListener('click', () => fileInput.click());
-dropZone.addEventListener('click', (e) => {
-  if (e.target !== pickBtn) fileInput.click();
-});
+fileOpenBtn.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('click', () => fileInput.click());
 
 fileInput.addEventListener('change', () => {
   if (fileInput.files.length) loadFile(fileInput.files[0]);
@@ -119,10 +116,14 @@ function renderMarkdown(mdText, fileName) {
   });
 
   // Render
-  rendered.innerHTML = marked.parse(mdText);
+  article.innerHTML = marked.parse(mdText);
+  article.dataset.state = 'loaded';
+
+  // Update file name
+  fileNameEl.textContent = fileName || 'Untitled';
 
   // Enhance code blocks: language label + copy button
-  rendered.querySelectorAll('pre').forEach(pre => {
+  article.querySelectorAll('pre').forEach(pre => {
     const code = pre.querySelector('code');
 
     // Detect language from class (e.g. "language-js")
@@ -130,7 +131,7 @@ function renderMarkdown(mdText, fileName) {
       const langMatch = code.className.match(/language-(\w+)/);
       if (langMatch) {
         const label = document.createElement('span');
-        label.className = 'code-lang-label';
+        label.className = 'code-lang';
         label.textContent = langMatch[1];
         pre.appendChild(label);
       }
@@ -138,7 +139,7 @@ function renderMarkdown(mdText, fileName) {
 
     // Copy button
     const btn = document.createElement('button');
-    btn.className = 'copy-btn';
+    btn.className = 'code-copy';
     btn.textContent = 'Copy';
     btn.addEventListener('click', () => {
       navigator.clipboard.writeText(code ? code.textContent : pre.textContent).then(() => {
@@ -148,13 +149,6 @@ function renderMarkdown(mdText, fileName) {
     });
     pre.appendChild(btn);
   });
-
-  // Show content, hide drop zone
-  dropZone.style.display = 'none';
-  rendered.style.display = 'block';
-
-  // Update file name
-  fileNameEl.textContent = fileName || 'Untitled';
 
   // Build TOC
   buildTOC();
@@ -176,11 +170,15 @@ function renderMarkdown(mdText, fileName) {
 // ============================================================
 
 function buildTOC() {
-  tocList.innerHTML = '';
-  const headings = rendered.querySelectorAll('h1, h2, h3, h4');
+  // Clear existing TOC links (keep the indicator element)
+  Array.from(tocList.children).forEach(child => {
+    if (!child.classList.contains('toc-indicator')) child.remove();
+  });
+
+  const headings = article.querySelectorAll('h1, h2, h3, h4');
 
   if (headings.length === 0) {
-    sidebar.classList.remove('visible');
+    sidebar.dataset.state = 'hidden';
     tocToggle.classList.add('hidden');
     return;
   }
@@ -192,7 +190,6 @@ function buildTOC() {
     }
 
     const depth = parseInt(heading.tagName[1]);
-    const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = '#' + heading.id;
     a.textContent = heading.textContent;
@@ -219,14 +216,13 @@ function buildTOC() {
         overlay.classList.remove('visible');
       }
     });
-    li.appendChild(a);
-    tocList.appendChild(li);
+    tocList.appendChild(a);
   });
 
-  sidebar.classList.add('visible');
+  sidebar.dataset.state = 'visible';
   tocToggle.classList.remove('hidden');
 
-  // Start intersection observer for active tracking
+  // Start scroll handler for active tracking
   observeHeadings(headings);
 }
 
@@ -282,7 +278,7 @@ function observeHeadings(headings) {
 }
 
 // ============================================================
-// TOC Toggle & Close
+// TOC Toggle & Overlay
 // ============================================================
 
 tocToggle.addEventListener('click', () => {
@@ -290,22 +286,14 @@ tocToggle.addEventListener('click', () => {
     sidebar.classList.toggle('mobile-open');
     overlay.classList.toggle('visible');
   } else {
-    sidebar.classList.toggle('visible');
+    const current = sidebar.dataset.state;
+    sidebar.dataset.state = current === 'visible' ? 'hidden' : 'visible';
   }
 });
 
 overlay.addEventListener('click', () => {
   sidebar.classList.remove('mobile-open');
   overlay.classList.remove('visible');
-});
-
-tocClose.addEventListener('click', () => {
-  if (window.innerWidth <= 900) {
-    sidebar.classList.remove('mobile-open');
-    overlay.classList.remove('visible');
-  } else {
-    sidebar.classList.remove('visible');
-  }
 });
 
 // ============================================================
@@ -325,7 +313,7 @@ sidebarResize.addEventListener('mousedown', (e) => {
 
 document.addEventListener('mousemove', (e) => {
   if (!isResizing) return;
-  const newWidth = Math.min(Math.max(e.clientX, 180), 450);
+  const newWidth = Math.min(Math.max(e.clientX, 220), 420);
   sidebar.style.width = newWidth + 'px';
 });
 
