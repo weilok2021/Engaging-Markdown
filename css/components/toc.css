@@ -1,7 +1,8 @@
 @layer components {
   /* ===== TOC nav section ===== */
   .toc {
-    padding: 14px 16px 0;
+    position: relative;
+    font-size: 0.92rem;
     flex: 1;
     overflow-y: auto;
     min-height: 0;
@@ -9,49 +10,64 @@
 
   .toc-label {
     font-size: 0.7rem;
-    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    padding-left: 10px;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    color: var(--ink-faint);
+    margin-bottom: 0.9rem;
   }
 
   .toc-list {
-    list-style: none;
     position: relative;
+    padding-left: 12px;
+    list-style: none;
   }
 
+  /* Sliding active indicator */
   .toc-indicator {
-    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 22px;
+    background: var(--accent);
+    border-radius: 1px;
+    transition: transform var(--dur-base) var(--ease-out);
   }
 
+  /* TOC links — depth-1 (default) */
   .toc-list a {
     display: block;
     text-decoration: none;
-    color: var(--text-muted);
-    font-size: 0.83rem;
-    padding: 5px 10px;
-    border-radius: 6px;
-    border-left: 2px solid transparent;
-    transition: all 0.2s;
-    line-height: 1.4;
+    padding: 4px 0;
+    color: var(--ink-soft);
+    line-height: 1.45;
+    transition: color var(--dur-fast) var(--ease-out);
   }
 
-  .toc-list a:hover {
-    color: var(--text);
-    background: var(--accent-light);
-  }
+  .toc-list a:hover { color: var(--ink); }
 
   .toc-list a.active {
-    color: var(--toc-active);
-    border-left-color: var(--toc-active);
-    background: var(--accent-light);
-    font-weight: 600;
+    color: var(--ink);
+    font-weight: 500;
   }
 
-  .toc-list a.depth-1 { font-weight: 600; color: var(--text-secondary); }
-  .toc-list a.depth-2 { padding-left: 10px; }
-  .toc-list a.depth-3 { padding-left: 26px; font-size: 0.8rem; }
-  .toc-list a.depth-4 { padding-left: 42px; font-size: 0.78rem; }
+  /* Depth-2 items are indented and slightly smaller */
+  .toc-list a.depth-2 {
+    padding-left: 14px;
+    font-size: 0.86rem;
+    color: var(--ink-faint);
+  }
+
+  .toc-list a.depth-3 {
+    padding-left: 28px;
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+
+  .toc-list a.depth-4 {
+    padding-left: 42px;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
 }

@@ -9,43 +9,12 @@
   .main {
     flex: 1;
     min-width: 0;
-    display: flex;
-    justify-content: center;
-    padding: 40px 32px;
+    padding: 4rem clamp(2rem, 6vw, 5rem) 6rem;
     position: relative;
   }
 
-  /* ===== Article (rendered markdown) ===== */
-  .article {
-    width: 100%;
-    max-width: var(--max-width);
-    animation: fadeInUp 0.5s ease;
-  }
-
-  /* Hide article when empty (drop zone shows instead) */
-  .article[data-state="empty"] {
-    display: none;
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ===== Overlay for mobile sidebar ===== */
-  .sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 85;
-  }
-
-  .sidebar-overlay.visible { display: block; }
-
   /* ===== Responsive ===== */
   @media (max-width: 900px) {
-    .main { padding: 24px 16px; }
+    .main { padding: 2rem 1.5rem 4rem; }
   }
-
 }

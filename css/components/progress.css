@@ -4,10 +4,11 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: var(--progress-height);
+    height: 2px;
     background: var(--accent);
     width: 0%;
     z-index: 1000;
-    transition: width 0.15s linear;
+    transition: width 80ms linear;
+    pointer-events: none;
   }
 }

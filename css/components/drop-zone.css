@@ -1,49 +1,38 @@
 @layer components {
-  /* ===== Drop Zone (landing) ===== */
+  /* ===== Drop Zone (landing / empty state) ===== */
   .drop-zone {
-    position: absolute;
-    inset: 40px 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px dashed var(--border);
-    border-radius: 16px;
-    text-align: center;
-    transition: all var(--transition-speed);
-    background: var(--drop-zone-bg);
+    padding: 2rem;
     cursor: pointer;
     min-height: 60vh;
   }
 
-  .drop-zone:hover,
-  .drop-zone.drag-over {
-    border-color: var(--drop-zone-border);
-    background: var(--accent-light);
-  }
-
-  .drop-zone.drag-over {
-    transform: scale(1.008);
-    border-style: solid;
+  .drop-zone.drag-over .drop-zone-frame {
+    border-color: var(--accent);
   }
 
   .drop-zone-frame {
-    padding: 48px 32px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 5rem 2rem;
+    text-align: center;
+    width: 100%;
+    max-width: var(--content-max);
+    transition: border-color var(--dur-fast) var(--ease-out);
   }
 
   .drop-zone-text {
-    font-size: 1.1rem;
+    font-family: var(--font-display);
     font-style: italic;
-    color: var(--text-muted);
+    color: var(--ink-faint);
+    font-variation-settings: "SOFT" 80, "opsz" 36, "wght" 300;
+    font-size: 1.3rem;
   }
 
   /* Hide drop zone when article has content */
   .article[data-state="loaded"] ~ .drop-zone {
     display: none;
-  }
-
-  @media (max-width: 900px) {
-    .drop-zone {
-      inset: 24px 16px;
-    }
   }
 }

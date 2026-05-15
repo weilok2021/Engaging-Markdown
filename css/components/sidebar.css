@@ -1,47 +1,45 @@
 @layer components {
-  /* ===== Sidebar / TOC container ===== */
+  /* ===== Sidebar ===== */
   .sidebar {
     position: sticky;
     top: 0;
-    width: var(--sidebar-width);
-    min-width: 220px;
-    max-width: 420px;
     height: 100vh;
-    overflow-y: auto;
-    border-right: 1px solid var(--border);
-    flex-shrink: 0;
-    background: var(--bg-secondary);
-    transition: background var(--transition-speed), border-color var(--transition-speed);
+    border-right: 1px solid var(--rule);
     display: none;
     flex-direction: column;
+    grid-template-rows: auto 1fr auto;
+    padding: 2rem 1.4rem 1.4rem 2rem;
+    overflow-y: auto;
+    flex-shrink: 0;
+    /* No background fill — let paper show through */
+    transition: border-color var(--dur-base) var(--ease-out);
   }
 
   .sidebar[data-state="visible"] { display: flex; }
 
   .sidebar::-webkit-scrollbar { width: 3px; }
   .sidebar::-webkit-scrollbar-track { background: transparent; }
-  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
 
   /* ===== Sidebar head (brand + filename) ===== */
   .sidebar-head {
-    padding: 20px 16px 14px;
-    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
     flex-shrink: 0;
   }
 
   .brand {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-variation-settings: "SOFT" 50, "opsz" 24, "wght" 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
   }
 
   .brand-sub {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-top: 4px;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    margin-top: 0.1em;
+    letter-spacing: 0.02em;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -49,60 +47,30 @@
 
   /* ===== Sidebar foot (theme + open buttons) ===== */
   .sidebar-foot {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    flex-shrink: 0;
     margin-top: auto;
-    padding: 14px 16px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
   }
 
-  .theme-toggle {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-family: var(--font-body);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all var(--transition-speed);
-  }
-
-  .theme-toggle:hover {
-    background: var(--bg-tertiary);
-    color: var(--text);
-    border-color: var(--accent);
-  }
-
-  .theme-toggle .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-    display: inline-block;
-    flex-shrink: 0;
-  }
-
+  /* File open button */
   .file-open {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    border-radius: 8px;
-    padding: 6px 12px;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
     cursor: pointer;
-    font-size: 0.85rem;
     font-family: var(--font-body);
-    transition: all var(--transition-speed);
   }
 
   .file-open:hover {
-    background: var(--bg-tertiary);
-    color: var(--text);
+    color: var(--ink);
+    background: var(--accent-soft);
     border-color: var(--accent);
   }
 
@@ -116,7 +84,7 @@
     cursor: col-resize;
     z-index: 10;
     background: transparent;
-    transition: background 0.2s;
+    transition: background var(--dur-fast) var(--ease-out);
   }
 
   .sidebar-resize:hover,
@@ -131,24 +99,22 @@
     bottom: 20px;
     left: 20px;
     z-index: 95;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    border-radius: 10px;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    border-radius: 8px;
     width: 42px;
     height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: var(--shadow-lg);
-    transition: all var(--transition-speed);
+    transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
   }
 
   .toc-toggle:hover {
-    background: var(--bg-tertiary);
-    color: var(--text);
-    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--ink);
   }
 
   .toc-toggle.hidden { display: none; }
@@ -157,18 +123,18 @@
   @media (max-width: 900px) {
     .sidebar {
       position: fixed;
-      left: -280px;
+      left: -290px;
       top: 0;
       z-index: 90;
-      width: 270px !important;
+      width: var(--sidebar-w) !important;
       height: 100vh;
-      box-shadow: var(--shadow-lg);
-      transition: left 0.3s ease, background var(--transition-speed);
+      transition: left var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+      background: var(--paper);
     }
 
     .sidebar[data-state="visible"] {
       display: flex;
-      left: -280px;
+      left: -290px;
     }
 
     .sidebar[data-state="visible"].mobile-open {
@@ -177,4 +143,15 @@
 
     .sidebar-resize { display: none; }
   }
+
+  /* ===== Overlay for mobile sidebar ===== */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 85;
+  }
+
+  .sidebar-overlay.visible { display: block; }
 }
