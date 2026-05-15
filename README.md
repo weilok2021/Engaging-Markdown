@@ -17,12 +17,15 @@ So I built Engaging Markdown. It runs entirely in your browser. No backend, no d
 ## Features
 
 - **Drag & drop** or click to open any `.md`, `.markdown`, `.mdx`, or `.txt` file
-- **Dark / light theme** with automatic system preference detection
-- **Auto-generated Table of Contents** from your headings (h1–h4), with active section tracking
+- **Try a sample document** without bringing your own — one click from the landing page lets you preview the viewer's full typography, TOC, and code-block treatment
+- **Refined typography** — Fraunces (display) + Switzer (body) + JetBrains Mono (code), tuned for long-form reading at 17px / 1.7 line-height
+- **Light & dark themes** with automatic system preference detection; the syntax-highlighting palette swaps with the theme
+- **Auto-generated Table of Contents** from your headings (h1–h4), with smooth-scroll navigation and an animated active-section indicator
 - **Syntax highlighting** for code blocks with language labels and one-click copy
-- **Resizable sidebar** on desktop, slide-out drawer on mobile
+- **Resizable sidebar** on desktop (220–420 px), slide-out drawer on mobile
 - **Reading progress bar** at the top of the page
 - **Session persistence** — refresh the page and your document is still there
+- **Click the brand wordmark** in the sidebar to return to the landing page at any time
 
 ## Usage
 
