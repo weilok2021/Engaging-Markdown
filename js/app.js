@@ -5,25 +5,15 @@
 import * as theme from './modules/theme.js';
 import { doc } from './state/document.js';
 import * as fileLoader from './modules/fileLoader.js';
+import * as toc from './modules/toc.js';
+import * as codeBlocks from './modules/codeBlocks.js';
 
 // --- DOM refs ---
 const article       = document.querySelector('.article');
 const progressBar   = document.querySelector('.progress');
-const sidebar       = document.querySelector('.sidebar');
-const sidebarFoot   = sidebar.querySelector('.sidebar-foot');
-const tocList       = document.querySelector('.toc-list');
-const tocIndicator  = document.querySelector('.toc-indicator');
-const tocToggle     = document.querySelector('[data-toc-toggle]');
-const fileNameEl    = document.querySelector('[data-file-name]');
-const overlay       = document.querySelector('[data-sidebar-overlay]');
 const sidebarResize = document.querySelector('[data-sidebar-resize]');
+const fileNameEl    = document.querySelector('[data-file-name]');
 const html          = document.documentElement;
-
-// ============================================================
-// Theme
-// ============================================================
-
-theme.init({ root: html });
 
 // ============================================================
 // Load & Render
@@ -34,12 +24,6 @@ function renderMarkdown(mdText, fileName) {
   marked.setOptions({
     breaks: true,
     gfm: true,
-    highlight: function(code, lang) {
-      if (lang && hljs.getLanguage(lang)) {
-        return hljs.highlight(code, { language: lang }).value;
-      }
-      return hljs.highlightAuto(code).value;
-    }
   });
 
   // Render
@@ -49,176 +33,18 @@ function renderMarkdown(mdText, fileName) {
   // Update file name
   fileNameEl.textContent = fileName || 'Untitled';
 
-  // Enhance code blocks: language label + copy button
-  article.querySelectorAll('pre').forEach(pre => {
-    const code = pre.querySelector('code');
-
-    // Detect language from class (e.g. "language-js")
-    if (code) {
-      const langMatch = code.className.match(/language-(\w+)/);
-      if (langMatch) {
-        const label = document.createElement('span');
-        label.className = 'code-lang';
-        label.textContent = langMatch[1];
-        pre.appendChild(label);
-      }
-    }
-
-    // Copy button
-    const btn = document.createElement('button');
-    btn.className = 'code-copy';
-    btn.textContent = 'Copy';
-    btn.addEventListener('click', () => {
-      navigator.clipboard.writeText(code ? code.textContent : pre.textContent).then(() => {
-        btn.textContent = 'Copied!';
-        setTimeout(() => btn.textContent = 'Copy', 1500);
-      });
-    });
-    pre.appendChild(btn);
-  });
-
-  // Build TOC
-  buildTOC();
-
   // Scroll to top
   window.scrollTo({ top: 0 });
+
+  // Notify listeners (toc.js + codeBlocks.js)
+  article.dispatchEvent(new CustomEvent('rendered', { bubbles: true, detail: { content: mdText, filename: fileName } }));
 }
-
-// ============================================================
-// Table of Contents
-// ============================================================
-
-function buildTOC() {
-  // Clear existing TOC links (keep the indicator element)
-  Array.from(tocList.children).forEach(child => {
-    if (!child.classList.contains('toc-indicator')) child.remove();
-  });
-
-  const headings = article.querySelectorAll('h1, h2, h3, h4');
-
-  if (headings.length === 0) {
-    sidebar.dataset.state = 'hidden';
-    tocToggle.classList.add('hidden');
-    return;
-  }
-
-  headings.forEach((heading, i) => {
-    // Give heading an id if it doesn't have one
-    if (!heading.id) {
-      heading.id = 'heading-' + i;
-    }
-
-    const depth = parseInt(heading.tagName[1]);
-    const a = document.createElement('a');
-    a.href = '#' + heading.id;
-    a.textContent = heading.textContent;
-    a.className = 'depth-' + depth;
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      // Immediately force this link as active
-      tocList.querySelectorAll('a').forEach(link => link.classList.remove('active'));
-      a.classList.add('active');
-      a.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-
-      // Suppress scroll-based tracking while smooth scroll runs
-      isClickScrolling = true;
-      if (clickScrollTimer) clearTimeout(clickScrollTimer);
-      clickScrollTimer = setTimeout(() => { isClickScrolling = false; }, 800);
-
-      // Scroll to the heading
-      heading.scrollIntoView({ behavior: 'smooth' });
-
-      // Close mobile sidebar
-      if (window.innerWidth <= 900) {
-        sidebar.classList.remove('mobile-open');
-        overlay.classList.remove('visible');
-      }
-    });
-    tocList.appendChild(a);
-  });
-
-  sidebar.dataset.state = 'visible';
-  tocToggle.classList.remove('hidden');
-
-  // Start scroll handler for active tracking
-  observeHeadings(headings);
-}
-
-let activeHeadingScrollHandler = null;
-let isClickScrolling = false;
-let clickScrollTimer = null;
-
-function observeHeadings(headings) {
-  // Remove previous scroll handler if re-rendering
-  if (activeHeadingScrollHandler) {
-    window.removeEventListener('scroll', activeHeadingScrollHandler);
-  }
-
-  const headingsArr = Array.from(headings);
-
-  function updateActiveHeading() {
-    if (isClickScrolling) return;
-    const tocLinks = tocList.querySelectorAll('a');
-
-    // Find the last heading whose top edge has scrolled past the top bar
-    let current = null;
-    for (const h of headingsArr) {
-      if (h.getBoundingClientRect().top <= 80) {
-        current = h;
-      } else {
-        break;
-      }
-    }
-
-    if (current) {
-      tocLinks.forEach(a => a.classList.remove('active'));
-      const activeLink = tocList.querySelector(`a[href="#${current.id}"]`);
-      if (activeLink) {
-        activeLink.classList.add('active');
-        activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      }
-    }
-  }
-
-  activeHeadingScrollHandler = updateActiveHeading;
-  window.addEventListener('scroll', updateActiveHeading, { passive: true });
-
-  // Clear click-scroll suppression when scroll animation finishes (modern browsers)
-  window.addEventListener('scrollend', () => {
-    if (isClickScrolling) {
-      isClickScrolling = false;
-      if (clickScrollTimer) clearTimeout(clickScrollTimer);
-      updateActiveHeading();
-    }
-  }, { passive: true });
-
-  updateActiveHeading();
-}
-
-// ============================================================
-// TOC Toggle & Overlay
-// ============================================================
-
-tocToggle.addEventListener('click', () => {
-  if (window.innerWidth <= 900) {
-    sidebar.classList.toggle('mobile-open');
-    overlay.classList.toggle('visible');
-  } else {
-    const current = sidebar.dataset.state;
-    sidebar.dataset.state = current === 'visible' ? 'hidden' : 'visible';
-  }
-});
-
-overlay.addEventListener('click', () => {
-  sidebar.classList.remove('mobile-open');
-  overlay.classList.remove('visible');
-});
 
 // ============================================================
 // Sidebar Drag-to-Resize
 // ============================================================
 
+const sidebar = document.querySelector('.sidebar');
 let isResizing = false;
 
 sidebarResize.addEventListener('mousedown', (e) => {
@@ -259,9 +85,12 @@ window.addEventListener('scroll', () => {
 // Boot
 // ============================================================
 
+theme.init({ root: html });
 fileLoader.init({ root: html });
+toc.init({ root: html });        // listeners attach first
+codeBlocks.init({ root: html }); // listeners attach first
 
-// TEMPORARY: bridge doc updates to the legacy renderMarkdown until Task 12.
+// Bridge — fires renderMarkdown which dispatches 'rendered' event
 doc.subscribe(({ content, filename }) => {
   if (content) renderMarkdown(content, filename);
 });
