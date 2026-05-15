@@ -2,13 +2,13 @@
    Engaging Markdown Viewer
    ============================================================ */
 
+import * as theme from './modules/theme.js';
+
 // --- DOM refs ---
 const article       = document.querySelector('.article');
 const dropZone      = document.querySelector('[data-drop-zone]');
 const fileInput     = document.querySelector('[data-file-input]');
 const fileOpenBtn   = document.querySelector('[data-file-open]');
-const themeToggle   = document.querySelector('[data-theme-toggle]');
-const themeLabel    = themeToggle.querySelector('.label');
 const progressBar   = document.querySelector('.progress');
 const sidebar       = document.querySelector('.sidebar');
 const sidebarFoot   = sidebar.querySelector('.sidebar-foot');
@@ -24,36 +24,7 @@ const html          = document.documentElement;
 // Theme
 // ============================================================
 
-const savedTheme = localStorage.getItem('md-viewer-theme');
-if (savedTheme) {
-  html.setAttribute('data-theme', savedTheme);
-} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  html.setAttribute('data-theme', 'dark');
-}
-updateThemeLabel();
-updateHljsTheme();
-
-themeToggle.addEventListener('click', () => {
-  const current = html.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  html.setAttribute('data-theme', next);
-  localStorage.setItem('md-viewer-theme', next);
-  updateThemeLabel();
-  updateHljsTheme();
-});
-
-function updateThemeLabel() {
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  themeLabel.textContent = isDark ? 'Dark' : 'Light';
-}
-
-function updateHljsTheme() {
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  const link = document.getElementById('hljs-theme');
-  link.href = isDark
-    ? 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css'
-    : 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css';
-}
+theme.init({ root: html });
 
 // ============================================================
 // File Input
