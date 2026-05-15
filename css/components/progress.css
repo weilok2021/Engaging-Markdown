@@ -4,11 +4,20 @@
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
     height: 2px;
-    background: var(--accent);
-    width: 0%;
+    background: transparent;
     z-index: 1000;
-    transition: width 80ms linear;
     pointer-events: none;
+  }
+
+  .progress::after {
+    content: "";
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transform-origin: left center;
+    transform: scaleX(var(--p, 0));
+    transition: transform 80ms linear;
   }
 }
