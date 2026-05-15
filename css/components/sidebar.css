@@ -34,6 +34,20 @@
     font-variation-settings: "SOFT" 50, "opsz" 24, "wght" 500;
     letter-spacing: -0.01em;
     color: var(--ink);
+    text-align: left;
+    padding: 0;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .brand:hover {
+    color: var(--accent);
+  }
+
+  .brand:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
   }
 
   .brand-sub {

@@ -13,9 +13,9 @@ export function init({ root }) {
       fileNameEl.textContent = content ? (filename || 'Untitled') : 'No file open';
     }
 
-    if (content) {
-      window.scrollTo({ top: 0 });
-      article.dispatchEvent(new CustomEvent('rendered', { bubbles: true, detail: { content, filename } }));
-    }
+    window.scrollTo({ top: 0 });
+    // Dispatch even on empty content so post-render consumers (toc, codeBlocks)
+    // can clear their state — toc resets the sidebar, codeBlocks no-ops on empty.
+    article.dispatchEvent(new CustomEvent('rendered', { bubbles: true, detail: { content, filename } }));
   });
 }

@@ -28,7 +28,7 @@
     <!-- Sidebar / TOC -->
     <aside class="sidebar" data-state="hidden">
       <div class="sidebar-head">
-        <div class="brand">Engaging Markdown</div>
+        <button class="brand" data-home type="button" title="Back to home">Engaging Markdown</button>
         <div class="brand-sub" data-file-name>No file open</div>
       </div>
 
@@ -56,9 +56,26 @@
 
       <!-- Empty-state drop zone, visible when article is empty (CSS-controlled) -->
       <div class="drop-zone" data-drop-zone>
-        <div class="drop-zone-frame">
+        <header class="empty-brand">
+          <h1 class="empty-brand-name">Engaging Markdown</h1>
+          <p class="empty-brand-sub">A lightweight viewer for reading Markdown — built for long-form, designed to stay out of the way.</p>
+        </header>
+
+        <div class="drop-zone-frame" data-drop-frame>
           <p class="drop-zone-text">Drop a Markdown file</p>
+          <p class="drop-zone-hint">or click to browse · .md, .markdown, .mdx, .txt</p>
         </div>
+
+        <ul class="empty-features" aria-label="What you get">
+          <li>Auto table of contents</li>
+          <li>Syntax-highlighted code</li>
+          <li>Light &amp; dark themes</li>
+          <li>Session restored on refresh</li>
+        </ul>
+
+        <button class="empty-sample" data-sample type="button">
+          Try a sample document <span aria-hidden="true">→</span>
+        </button>
       </div>
     </main>
   </div>
