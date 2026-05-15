@@ -48,7 +48,7 @@ export function init({ root }) {
         moveIndicator(a);
 
         if (window.innerWidth <= 900) {
-          sidebar.dataset.state = 'hidden';
+          sidebar.classList.remove('mobile-open');
           overlay.classList.remove('visible');
         }
       });
@@ -107,15 +107,19 @@ export function init({ root }) {
 
   // TOC toggle + mobile overlay handlers
   tocToggle.addEventListener('click', () => {
-    const isOpen = sidebar.dataset.state === 'visible';
-    sidebar.dataset.state = isOpen ? 'hidden' : 'visible';
-    if (window.innerWidth <= 900) {
+    const isMobile = window.innerWidth <= 900;
+    if (isMobile) {
+      const isOpen = sidebar.classList.contains('mobile-open');
+      sidebar.classList.toggle('mobile-open', !isOpen);
       overlay.classList.toggle('visible', !isOpen);
+    } else {
+      const isOpen = sidebar.dataset.state === 'visible';
+      sidebar.dataset.state = isOpen ? 'hidden' : 'visible';
     }
   });
 
   overlay.addEventListener('click', () => {
-    sidebar.dataset.state = 'hidden';
+    sidebar.classList.remove('mobile-open');
     overlay.classList.remove('visible');
   });
 }
