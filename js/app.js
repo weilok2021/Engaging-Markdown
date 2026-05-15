@@ -7,38 +7,12 @@ import { doc } from './state/document.js';
 import * as fileLoader from './modules/fileLoader.js';
 import * as toc from './modules/toc.js';
 import * as codeBlocks from './modules/codeBlocks.js';
+import * as renderer from './modules/renderer.js';
 
 // --- DOM refs ---
-const article       = document.querySelector('.article');
 const progressBar   = document.querySelector('.progress');
 const sidebarResize = document.querySelector('[data-sidebar-resize]');
-const fileNameEl    = document.querySelector('[data-file-name]');
 const html          = document.documentElement;
-
-// ============================================================
-// Load & Render
-// ============================================================
-
-function renderMarkdown(mdText, fileName) {
-  // Configure marked
-  marked.setOptions({
-    breaks: true,
-    gfm: true,
-  });
-
-  // Render
-  article.innerHTML = marked.parse(mdText);
-  article.dataset.state = 'loaded';
-
-  // Update file name
-  fileNameEl.textContent = fileName || 'Untitled';
-
-  // Scroll to top
-  window.scrollTo({ top: 0 });
-
-  // Notify listeners (toc.js + codeBlocks.js)
-  article.dispatchEvent(new CustomEvent('rendered', { bubbles: true, detail: { content: mdText, filename: fileName } }));
-}
 
 // ============================================================
 // Sidebar Drag-to-Resize
@@ -87,12 +61,8 @@ window.addEventListener('scroll', () => {
 
 theme.init({ root: html });
 fileLoader.init({ root: html });
-toc.init({ root: html });        // listeners attach first
-codeBlocks.init({ root: html }); // listeners attach first
-
-// Bridge — fires renderMarkdown which dispatches 'rendered' event
-doc.subscribe(({ content, filename }) => {
-  if (content) renderMarkdown(content, filename);
-});
+toc.init({ root: html });          // listener
+codeBlocks.init({ root: html });   // listener
+renderer.init({ root: html });     // publisher — subscribes to doc and fires synchronously on subscribe
 
 doc.restore();
