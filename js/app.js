@@ -3,12 +3,11 @@
    ============================================================ */
 
 import * as theme from './modules/theme.js';
+import { doc } from './state/document.js';
+import * as fileLoader from './modules/fileLoader.js';
 
 // --- DOM refs ---
 const article       = document.querySelector('.article');
-const dropZone      = document.querySelector('[data-drop-zone]');
-const fileInput     = document.querySelector('[data-file-input]');
-const fileOpenBtn   = document.querySelector('[data-file-open]');
 const progressBar   = document.querySelector('.progress');
 const sidebar       = document.querySelector('.sidebar');
 const sidebarFoot   = sidebar.querySelector('.sidebar-foot');
@@ -27,51 +26,8 @@ const html          = document.documentElement;
 theme.init({ root: html });
 
 // ============================================================
-// File Input
-// ============================================================
-
-fileOpenBtn.addEventListener('click', () => fileInput.click());
-dropZone.addEventListener('click', () => fileInput.click());
-
-fileInput.addEventListener('change', () => {
-  if (fileInput.files.length) loadFile(fileInput.files[0]);
-});
-
-// ============================================================
-// Drag & Drop
-// ============================================================
-
-['dragenter', 'dragover'].forEach(evt =>
-  dropZone.addEventListener(evt, (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); })
-);
-['dragleave', 'drop'].forEach(evt =>
-  dropZone.addEventListener(evt, () => dropZone.classList.remove('drag-over'))
-);
-
-// Support dropping anywhere on the page when content is shown
-document.addEventListener('dragover', (e) => e.preventDefault());
-document.addEventListener('drop', (e) => {
-  e.preventDefault();
-  if (e.dataTransfer.files.length) loadFile(e.dataTransfer.files[0]);
-});
-
-dropZone.addEventListener('drop', (e) => {
-  e.preventDefault();
-  if (e.dataTransfer.files.length) loadFile(e.dataTransfer.files[0]);
-});
-
-// ============================================================
 // Load & Render
 // ============================================================
-
-function loadFile(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const md = e.target.result;
-    renderMarkdown(md, file.name);
-  };
-  reader.readAsText(file);
-}
 
 function renderMarkdown(mdText, fileName) {
   // Configure marked
@@ -126,14 +82,6 @@ function renderMarkdown(mdText, fileName) {
 
   // Scroll to top
   window.scrollTo({ top: 0 });
-
-  // Persist for session refresh
-  try {
-    sessionStorage.setItem('md-viewer-content', mdText);
-    sessionStorage.setItem('md-viewer-filename', fileName || 'Untitled');
-  } catch (e) {
-    // sessionStorage may be full or unavailable; silently ignore
-  }
 }
 
 // ============================================================
@@ -308,17 +256,14 @@ window.addEventListener('scroll', () => {
 });
 
 // ============================================================
-// Restore from sessionStorage on page load
+// Boot
 // ============================================================
 
-(function restoreSession() {
-  try {
-    const savedMd = sessionStorage.getItem('md-viewer-content');
-    const savedName = sessionStorage.getItem('md-viewer-filename');
-    if (savedMd) {
-      renderMarkdown(savedMd, savedName || 'Untitled');
-    }
-  } catch (e) {
-    // sessionStorage unavailable; show default drop zone
-  }
-})();
+fileLoader.init({ root: html });
+
+// TEMPORARY: bridge doc updates to the legacy renderMarkdown until Task 12.
+doc.subscribe(({ content, filename }) => {
+  if (content) renderMarkdown(content, filename);
+});
+
+doc.restore();
