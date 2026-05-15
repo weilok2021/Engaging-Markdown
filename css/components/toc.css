@@ -52,22 +52,9 @@
     font-weight: 500;
   }
 
-  /* Depth-2 items are indented and slightly smaller */
-  .toc-list a.depth-2 {
-    padding-left: 14px;
-    font-size: 0.86rem;
-    color: var(--ink-faint);
-  }
-
-  .toc-list a.depth-3 {
-    padding-left: 28px;
-    font-size: 0.82rem;
-    color: var(--ink-faint);
-  }
-
-  .toc-list a.depth-4 {
-    padding-left: 42px;
-    font-size: 0.8rem;
-    color: var(--ink-faint);
-  }
+  /* Depth indentation — matches data-depth attribute set by toc.js */
+  .toc-list a[data-depth="1"] { font-weight: 500; color: var(--ink); }
+  .toc-list a[data-depth="2"] { padding-left: 14px; font-size: 0.92rem; color: var(--ink-soft); }
+  .toc-list a[data-depth="3"] { padding-left: 28px; font-size: 0.86rem; color: var(--ink-faint); }
+  .toc-list a[data-depth="4"] { padding-left: 42px; font-size: 0.82rem; color: var(--ink-faint); }
 }

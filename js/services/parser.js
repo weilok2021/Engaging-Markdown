@@ -8,7 +8,12 @@
 export const parser = {
   toHtml(markdown) {
     try {
-      return window.marked.parse(markdown, { gfm: true, breaks: true });
+      return window.marked.parse(markdown, {
+        gfm: true,
+        breaks: true,
+        mangle: false,
+        headerIds: false,
+      });
     } catch (err) {
       return `<p class="parse-error">Failed to render Markdown: ${err.message}</p>`;
     }

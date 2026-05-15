@@ -40,6 +40,7 @@ export function init({ root }) {
 
   dropZone?.addEventListener('drop', (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]);
   });
 }
