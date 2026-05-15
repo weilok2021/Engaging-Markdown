@@ -11,3 +11,13 @@ Desktop.ini
 
 # Claude Code
 .claude/
+
+# AI assistant guidance (local-only, not part of the published app)
+CLAUDE.md
+
+# Local-only design + working files — never push to remote
+docs/
+prototypes/
+.worktrees/
+.playwright-mcp/
+/*.png
