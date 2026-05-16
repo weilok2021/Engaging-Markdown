@@ -1,0 +1,27 @@
+@layer components {
+  .theme-toggle {
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+    cursor: pointer;
+  }
+
+  .theme-toggle:hover {
+    color: var(--ink);
+    background: var(--accent-soft);
+  }
+
+  .theme-toggle .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ink);
+    transition: background var(--dur-base) var(--ease-out);
+    flex-shrink: 0;
+  }
+}

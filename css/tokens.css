@@ -1,0 +1,44 @@
+@layer tokens {
+  :root {
+    /* Color */
+    --paper:        #FAF7F2;
+    --paper-raised: #F4EFE6;
+    --ink:          #1A1A1A;
+    --ink-soft:     #555148;
+    --ink-faint:    #908A7E;
+    --rule:         #E5DECF;
+    --accent:       #1E3A5F;
+    --accent-soft:  rgba(30, 58, 95, 0.10);
+    --selection:    rgba(184, 137, 61, 0.20);
+    --code-bg:      #F1ECE0;
+
+    /* Type */
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body:    "Switzer", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-mono:    "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+    /* Motion */
+    --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-soft:    cubic-bezier(0.4, 0, 0.2, 1);
+    --dur-fast:     140ms;
+    --dur-base:     240ms;
+    --dur-slow:     420ms;
+
+    /* Layout */
+    --sidebar-w:    280px;
+    --content-max:  68ch;
+  }
+
+  [data-theme="dark"] {
+    --paper:        #14110D;
+    --paper-raised: #1E1A14;
+    --ink:          #EFE9DC;
+    --ink-soft:     #A8A294;
+    --ink-faint:    #6E6757;
+    --rule:         #2B2620;
+    --accent:       #8FB4D8;
+    --accent-soft:  rgba(143, 180, 216, 0.12);
+    --selection:    rgba(212, 168, 85, 0.20);
+    --code-bg:      #1A1612;
+  }
+}

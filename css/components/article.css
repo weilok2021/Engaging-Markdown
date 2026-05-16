@@ -1,0 +1,106 @@
+@layer components {
+  .article {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: enter var(--dur-slow) var(--ease-out) 80ms forwards;
+  }
+
+  /* Hide article when empty (drop zone shows instead) */
+  .article[data-state="empty"] {
+    display: none;
+  }
+
+  /* Lede paragraph: first <p> immediately after h1 */
+  .article > h1 + p {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.3rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    margin-bottom: 1.6em;
+    font-variation-settings: "SOFT" 80, "opsz" 36, "wght" 300;
+  }
+
+  /* Scroll margin for deep-linked headings */
+  .article h1,
+  .article h2,
+  .article h3,
+  .article h4,
+  .article h5,
+  .article h6 {
+    scroll-margin-top: 70px;
+  }
+
+  /* Images */
+  .article img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin: 1.2em 0;
+  }
+
+  /* Tables */
+  .article table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.2em;
+    font-size: 0.93rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .article th,
+  .article td {
+    border-bottom: 1px solid var(--rule);
+    padding: 10px 16px;
+    text-align: left;
+  }
+
+  .article tr:last-child td { border-bottom: none; }
+
+  .article th {
+    background: var(--paper-raised);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+  }
+
+  .article tr:nth-child(even) td {
+    background: var(--paper-raised);
+  }
+
+  /* Task list */
+  .article input[type="checkbox"] {
+    margin-right: 6px;
+    accent-color: var(--accent);
+  }
+
+  /* Kbd */
+  .article kbd {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 2px 6px;
+    color: var(--ink-soft);
+  }
+
+  @keyframes enter {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

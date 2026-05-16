@@ -1,0 +1,60 @@
+@layer components {
+  /* ===== TOC nav section ===== */
+  .toc {
+    position: relative;
+    font-size: 0.92rem;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  .toc-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    color: var(--ink-faint);
+    margin-bottom: 0.9rem;
+  }
+
+  .toc-list {
+    position: relative;
+    padding-left: 12px;
+    list-style: none;
+  }
+
+  /* Sliding active indicator */
+  .toc-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 22px;
+    background: var(--accent);
+    border-radius: 1px;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  /* TOC links — depth-1 (default) */
+  .toc-list a {
+    display: block;
+    text-decoration: none;
+    padding: 4px 0;
+    color: var(--ink-soft);
+    line-height: 1.45;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .toc-list a:hover { color: var(--ink); }
+
+  .toc-list a.active {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Depth indentation — matches data-depth attribute set by toc.js */
+  .toc-list a[data-depth="1"] { font-weight: 500; color: var(--ink); }
+  .toc-list a[data-depth="2"] { padding-left: 14px; font-size: 0.92rem; color: var(--ink-soft); }
+  .toc-list a[data-depth="3"] { padding-left: 28px; font-size: 0.86rem; color: var(--ink-faint); }
+  .toc-list a[data-depth="4"] { padding-left: 42px; font-size: 0.82rem; color: var(--ink-faint); }
+}

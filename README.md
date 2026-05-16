@@ -17,24 +17,28 @@ So I built Engaging Markdown. It runs entirely in your browser. No backend, no d
 ## Features
 
 - **Drag & drop** or click to open any `.md`, `.markdown`, `.mdx`, or `.txt` file
-- **Dark / light theme** with automatic system preference detection
-- **Auto-generated Table of Contents** from your headings (h1–h4), with active section tracking
+- **Try a sample document** without bringing your own — one click from the landing page lets you preview the viewer's full typography, TOC, and code-block treatment
+- **Refined typography** — Fraunces (display) + Switzer (body) + JetBrains Mono (code), tuned for long-form reading at 17px / 1.7 line-height
+- **Light & dark themes** with automatic system preference detection; the syntax-highlighting palette swaps with the theme
+- **Auto-generated Table of Contents** from your headings (h1–h4), with smooth-scroll navigation and an animated active-section indicator
 - **Syntax highlighting** for code blocks with language labels and one-click copy
-- **Resizable sidebar** on desktop, slide-out drawer on mobile
+- **Resizable sidebar** on desktop (220–420 px), slide-out drawer on mobile
 - **Reading progress bar** at the top of the page
 - **Session persistence** — refresh the page and your document is still there
+- **Click the brand wordmark** in the sidebar to return to the landing page at any time
 
 ## Usage
 
 Visit the [live site](https://weilok2021.github.io/Engaging-Markdown/) and drop a Markdown file onto the page. That's it.
 
-To run it locally:
+To run it locally — **a static server is required** (the app uses ES modules, which browsers refuse to load from `file://` for security reasons):
 
 ```bash
-# any static file server works
 python -m http.server 8000
 # or
 npx http-server
+# or
+php -S localhost:8000
 ```
 
 Then open `http://localhost:8000` in your browser.
@@ -43,10 +47,15 @@ Then open `http://localhost:8000` in your browser.
 
 Vanilla JavaScript, HTML, and CSS. No frameworks, no bundlers, no package manager.
 
-External libraries loaded via CDN:
-- [marked.js](https://github.com/markedjs/marked) — Markdown parsing
-- [Highlight.js](https://highlightjs.org/) — syntax highlighting
-- [Google Fonts](https://fonts.google.com/) — Inter + JetBrains Mono
+Architecture:
+- ES modules under `js/`: `state/` (reactive store + Document model), `services/` (storage + parser), `modules/` (UI features)
+- CSS organized with `@layer` and `@import` under `css/`: `reset`, `tokens`, `base`, `layout`, `components/*`
+
+External libraries loaded via CDN (pinned):
+- [marked.js](https://github.com/markedjs/marked) `@5.1.2` — Markdown parsing
+- [Highlight.js](https://highlightjs.org/) `@11.9.0` — syntax highlighting
+- [Google Fonts](https://fonts.google.com/) — Fraunces, JetBrains Mono
+- [Fontshare](https://www.fontshare.com/) — Switzer
 
 ## Contributing
 

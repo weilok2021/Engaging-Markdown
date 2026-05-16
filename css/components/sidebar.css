@@ -1,0 +1,172 @@
+@layer components {
+  /* ===== Sidebar ===== */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: var(--sidebar-w);
+    border-right: 1px solid var(--rule);
+    display: none;
+    flex-direction: column;
+    grid-template-rows: auto 1fr auto;
+    padding: 2rem 1.4rem 1.4rem 2rem;
+    overflow-y: auto;
+    flex-shrink: 0;
+    /* No background fill — let paper show through */
+    transition: border-color var(--dur-base) var(--ease-out);
+  }
+
+  .sidebar[data-state="visible"] { display: flex; }
+
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+
+  /* ===== Sidebar head (brand + filename) ===== */
+  .sidebar-head {
+    margin-bottom: 2rem;
+    flex-shrink: 0;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-variation-settings: "SOFT" 50, "opsz" 24, "wght" 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-align: left;
+    padding: 0;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .brand:hover {
+    color: var(--accent);
+  }
+
+  .brand:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .brand-sub {
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    margin-top: 0.1em;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ===== Sidebar foot (theme + open buttons) ===== */
+  .sidebar-foot {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    flex-shrink: 0;
+    margin-top: auto;
+  }
+
+  /* File open button */
+  .file-open {
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+    cursor: pointer;
+    font-family: var(--font-body);
+  }
+
+  .file-open:hover {
+    color: var(--ink);
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  /* Resize handle on the right edge of sidebar */
+  .sidebar-resize {
+    position: absolute;
+    top: 0;
+    right: -3px;
+    width: 6px;
+    height: 100%;
+    cursor: col-resize;
+    z-index: 10;
+    background: transparent;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+
+  .sidebar-resize:hover,
+  .sidebar-resize.active {
+    background: var(--accent);
+    opacity: 0.4;
+  }
+
+  /* ===== Mobile TOC toggle button ===== */
+  .toc-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 95;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    border-radius: 8px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+  }
+
+  .toc-toggle:hover {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+
+  .toc-toggle.hidden { display: none; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    .sidebar {
+      position: fixed;
+      left: -290px;
+      top: 0;
+      z-index: 90;
+      width: var(--sidebar-w) !important;
+      height: 100vh;
+      transition: left var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+      background: var(--paper);
+    }
+
+    .sidebar[data-state="visible"] {
+      display: flex;
+      left: -290px;
+    }
+
+    .sidebar[data-state="visible"].mobile-open {
+      left: 0;
+    }
+
+    .sidebar-resize { display: none; }
+  }
+
+  /* ===== Overlay for mobile sidebar ===== */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 85;
+  }
+
+  .sidebar-overlay.visible { display: block; }
+}

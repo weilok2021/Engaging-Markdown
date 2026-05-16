@@ -1,0 +1,23 @@
+@layer components {
+  /* ===== Reading Progress Bar ===== */
+  .progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: transparent;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .progress::after {
+    content: "";
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transform-origin: left center;
+    transform: scaleX(var(--p, 0));
+    transition: transform 80ms linear;
+  }
+}

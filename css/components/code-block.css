@@ -1,0 +1,38 @@
+@layer components {
+  /* Language label — top-right of pre */
+  .code-lang {
+    position: absolute;
+    top: 0.55em;
+    right: 0.9em;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    font-weight: 500;
+  }
+
+  /* Copy button */
+  .code-copy {
+    position: absolute;
+    top: 0.4em;
+    right: 4.5em;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    padding: 0.2em 0.6em;
+    border-radius: 3px;
+    transition: color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+    cursor: pointer;
+    opacity: 0;
+  }
+
+  .article pre:hover .code-copy { opacity: 1; }
+
+  .code-copy:hover {
+    color: var(--ink);
+    background: var(--accent-soft);
+  }
+
+  .code-copy.copied { color: var(--accent); }
+}

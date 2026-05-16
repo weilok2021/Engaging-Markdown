@@ -6,9 +6,12 @@
   <title>Engaging Markdown Viewer</title>
 
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.fontshare.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,0..100;1,9..144,300..600,0..100&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap" rel="stylesheet">
 
   <!-- Highlight.js theme (swapped dynamically by JS) -->
   <link id="hljs-theme" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" />
@@ -17,75 +20,86 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <!-- Reading progress bar -->
+  <div class="progress" aria-hidden="true"></div>
 
-  <!-- Progress Bar -->
-  <div id="progress-bar"></div>
-
-  <!-- Top Bar -->
-  <div id="top-bar">
-    <div class="left">
-      <button id="toc-toggle" class="top-btn hidden" title="Toggle Table of Contents">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="10" y2="8"/><line x1="2" y1="12" x2="12" y2="12"/></svg>
-        <span class="toc-label">Contents</span>
-      </button>
-      <span id="file-name">Engaging Markdown Viewer</span>
-    </div>
-    <div class="right">
-      <button id="open-btn" class="top-btn" title="Open Markdown File">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 13V3a1 1 0 0 1 1-1h4l2 2h4a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
-        Open
-      </button>
-      <button id="theme-toggle" title="Toggle dark / light mode">
-        <span id="theme-icon">&#9789;</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Sidebar Overlay (mobile) -->
-  <div id="sidebar-overlay"></div>
-
-  <!-- App -->
-  <div id="app">
+  <!-- App grid -->
+  <div class="app">
     <!-- Sidebar / TOC -->
-    <nav id="sidebar">
-      <div id="toc-header">
-        <div id="toc-title">Table of Contents</div>
-        <button id="toc-close" title="Close sidebar">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"/><line x1="12" y1="2" x2="2" y2="12"/></svg>
-        </button>
+    <aside class="sidebar" data-state="hidden">
+      <div class="sidebar-head">
+        <button class="brand" data-home type="button" title="Back to home">Engaging Markdown</button>
+        <div class="brand-sub" data-file-name>No file open</div>
       </div>
-      <ul id="toc-list"></ul>
-      <div id="sidebar-resize"></div>
-    </nav>
 
-    <!-- Main -->
-    <div id="main">
-      <div id="content">
+      <nav class="toc" aria-label="Table of contents">
+        <div class="toc-label">Contents</div>
+        <div class="toc-list">
+          <div class="toc-indicator" aria-hidden="true"></div>
+        </div>
+      </nav>
 
-        <!-- Drop Zone (landing) -->
-        <div id="drop-zone">
-          <div class="drop-icon">&#128196;</div>
-          <div class="drop-title">Drop a Markdown file here</div>
-          <div class="drop-subtitle">or click the button below to browse</div>
-          <button class="drop-btn" id="pick-btn">Choose .md file</button>
+      <div class="sidebar-foot">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="label">Light</span>
+        </button>
+        <button class="file-open" data-file-open aria-label="Open file">Open</button>
+      </div>
+
+      <div class="sidebar-resize" data-sidebar-resize aria-hidden="true"></div>
+    </aside>
+
+    <!-- Main reading column -->
+    <main class="main">
+      <article class="article" data-state="empty"></article>
+
+      <!-- Empty-state drop zone, visible when article is empty (CSS-controlled) -->
+      <div class="drop-zone" data-drop-zone>
+        <header class="empty-brand">
+          <h1 class="empty-brand-name">Engaging Markdown</h1>
+          <p class="empty-brand-sub">A lightweight viewer for reading Markdown — built for long-form, designed to stay out of the way.</p>
+        </header>
+
+        <div class="drop-zone-frame" data-drop-frame>
+          <p class="drop-zone-text">Drop a Markdown file</p>
+          <p class="drop-zone-hint">or click to browse · .md, .markdown, .mdx, .txt</p>
         </div>
 
-        <!-- Rendered Markdown -->
-        <article id="rendered" class="markdown-body"></article>
+        <ul class="empty-features" aria-label="What you get">
+          <li>Auto table of contents</li>
+          <li>Syntax-highlighted code</li>
+          <li>Light &amp; dark themes</li>
+          <li>Session restored on refresh</li>
+        </ul>
 
+        <button class="empty-sample" data-sample type="button">
+          Try a sample document <span aria-hidden="true">→</span>
+        </button>
       </div>
-    </div>
+    </main>
   </div>
 
+  <!-- Mobile sidebar overlay -->
+  <div class="sidebar-overlay" data-sidebar-overlay aria-hidden="true"></div>
+
+  <!-- Mobile drawer toggle -->
+  <button class="toc-toggle hidden" data-toc-toggle aria-label="Toggle table of contents">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <line x1="2" y1="4" x2="14" y2="4"/>
+      <line x1="2" y1="8" x2="10" y2="8"/>
+      <line x1="2" y1="12" x2="12" y2="12"/>
+    </svg>
+  </button>
+
   <!-- Hidden file input -->
-  <input type="file" id="file-input" accept=".md,.markdown,.mdx,.txt" hidden />
+  <input type="file" data-file-input accept=".md,.markdown,.mdx,.txt" hidden />
 
   <!-- Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@5.1.2/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
 
   <!-- App script -->
-  <script src="js/app.js"></script>
-
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
